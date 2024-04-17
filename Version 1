@@ -60,7 +60,7 @@ IncrementLoop:
     
     cmpb $0x03, %r8b # Checks to see if the current array index is less than or equal to 3 (i <= 3)
     
-    jle Beginning # Jumps to the beginning of the loop again if the previous condition was true
+    jle IncrementLoop # Jumps to the beginning of the loop again if the previous condition was true
 
 ret
 
