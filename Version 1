@@ -27,7 +27,7 @@ movq $0, %rbp # Initializing result
 
 movq $IntArray, %r10 # Getting access to the beginning of the array
 
-call Beginning
+call IncrementLoop
 
 
 # Outside of the function (after the function call)
@@ -52,7 +52,7 @@ movq %rbp, Result # Moving final result value to a variable that can be printed 
 	
 ret
 
-Beginning:
+IncrementLoop:
 
     addq (%r10, %r8, 1), %rbp # Accessing array element, putting result into rbp
     
