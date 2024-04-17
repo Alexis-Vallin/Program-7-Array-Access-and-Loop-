@@ -1,0 +1,66 @@
+.data
+
+IntArray:
+
+    .byte 1, 1, 2, 3
+    
+    
+OutputMessage:
+    .string "Here is your result: " # Length: 21
+    
+    
+.bss
+
+    .lcomm Result, 8
+
+
+
+.text
+
+.global main
+
+main: 
+    
+movq $0, %r8 # Starting array location -> IntArray[0]
+
+movq $0, %rbp # Initializing result
+
+movq $IntArray, %r10 # Getting access to the beginning of the array
+
+call Beginning
+
+
+# Outside of the function (after the function call)
+
+addq $0x30, %rbp # Adding 30 to the value (to account for ASCII Representation)
+
+movq %rbp, Result # Moving final result value to a variable that can be printed out
+
+
+    movq $4, %rax # Calls sys_write    
+	movq $1, %rbx # Tells sys_write to write output to standard output ($1 = stdout)
+	movq $OutputMessage, %rcx # Puts OutputMessage in the argument of sys_write for what to output
+	movq $21, %rdx # Length of string message to be written to standard output
+	int $0x80 # System interrupt
+
+
+    movq $4, %rax # Calls sys_write    
+	movq $1, %rbx # Tells sys_write to write output to standard output ($1 = stdout)
+	movq $Result, %rcx # Puts  in the argument of sys_write for what to output
+	movq $1, %rdx # Length of string message to be written to standard output
+	int $0x80 # System interrupt
+	
+ret
+
+Beginning:
+
+    addq (%r10, %r8, 1), %rbp # Accessing array element, putting result into rbp
+    
+    incq %r8 # Increments the current array index (i++)
+    
+    cmpb $0x03, %r8b # Checks to see if the current array index is less than or equal to 3 (i <= 3)
+    
+    jle Beginning # Jumps to the beginning of the loop again if the previous condition was true
+
+ret
+
